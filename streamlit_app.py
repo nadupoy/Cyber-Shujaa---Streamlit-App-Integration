@@ -106,3 +106,35 @@ input_data = {
 
 # Convert dictionary to a DataFrame:
 input_df = pd.DataFrame([input_data])
+
+
+# 3. Display predictions and model performance metrics interactively:
+st.header("Prediction Results")
+
+if pipeline is not None:
+  # Display the input data used for prediction:
+  st.subheader("Input Features")
+  st.table(input_df)
+
+  # Make prediction:
+  prediction = pipeline.predict(input_df)[0]
+
+  # Target variable is Median House Value, scaled in $100,000s:
+  predicted_price = prediction * 100000
+
+  # Display the result:
+  st.subheader("Predicted Median House Value")
+
+  # Use st.metric for a bold, clear display:
+  st.metric(
+    label="Predicted Price Estimate",
+    value=f"${predicted_price:,2f}"
+  )
+
+  st.caption(
+    "Note: Price is estimated in USD (2019 values). The model output is scaled by $100,000."
+  )
+
+  # 4. (Optional) Display model performance:
+  st.markdown("---")
+  st.subheader("Model Performance Context")
