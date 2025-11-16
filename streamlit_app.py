@@ -3,8 +3,10 @@ import joblib
 import pandas as pd
 import numpy as np
 
-# Load the model only once and cache it
-# Use st.cache_resource for models/data that are loaded once
+
+# 1. Load the saved ML model:
+
+# Use st.cache_resource for models/data that are loaded once:
 @st.cache_resource
 def load_model(path='california_housing_knr_pipeline.joblib'):
   # Load the trained pipeline:
@@ -16,3 +18,91 @@ def load_model(path='california_housing_knr_pipeline.joblib'):
     return None
 
 pipeline = load_model()
+
+# Set up the app title and configuration:
+st.set_page_config(page_title="California Housing Price Predictor", layout="wide")
+st.markdown("---")
+
+
+# 2. Create an intuitive UI for users to input data:
+st.sidebar.header("Input House Features")
+
+# Create input widgets using st.sidebar:
+MedInc = st.sidebar.slider(
+  "Median Income (in $10,000s)",
+  min_value=0.5,
+  max_value=15.0,
+  value=3.0,
+  step=0.1
+)
+
+HouseAge = st.sidebar.slider(
+  "House Age (Median Years)",
+  min_value=1.0,
+  max_value=55.0,
+  value=25.0,
+  step=1.0
+)
+
+AveRooms = st.sidebar.slider(
+  "Average Rooms per Household",
+  min_value=1.0,
+  max_value=15.0,
+  value=5.0,
+  step=0.1
+)
+
+AveBedrms = st.sidebar.slider(
+  "Average Bedrooms per Household",
+  min_value=0.5,
+  max_value=5.0,
+  value=1.0,
+  step=0.1
+)
+
+Population = st.sidebar.slider(
+  "Block Population",
+  min_value=10.0,
+  max_value=36000.0,
+  value=1500.0,
+  step=100.0
+)
+
+AveOccup = st.sidebar.slider(
+  "Average Household Occupancy",
+  min_value=0.5,
+  max_value=20.0,
+  value=3.0,
+  step=0.1
+)
+
+Latitude = st.sidebar.slider(
+  "Latitude",
+  min_value=32.0,
+  max_value=42.0,
+  value=34.0,
+  step=0.01
+)
+
+Longitude = st.sidebar.slider(
+  "Longitude",
+  min_value=125.0,
+  max_value=114.0,
+  value=118.0,
+  step=0.01
+)
+
+# Compile inputs into a dictionary:
+input_data = {
+  'MedInc': MedInc,
+  'HouseAge': HouseAge,
+  'AveRooms': AveRooms,
+  'AveBedrms': AveBedrms,
+  'Population': Population,
+  'AveOccup': AveOccup,
+  'Latitude': Latitude,
+  'Longitude': Longitude
+}
+
+# Convert dictionary to a DataFrame:
+input_df = pd.DataFrame([input_data])
