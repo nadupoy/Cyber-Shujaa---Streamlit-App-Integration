@@ -2,6 +2,7 @@ import streamlit as st
 import joblib
 import pandas as pd
 import numpy as np
+import sklearn
 
 
 # 1. Load the saved ML model:
@@ -128,13 +129,9 @@ if pipeline is not None:
   # Use st.metric for a bold, clear display:
   st.metric(
     label="Predicted Price Estimate",
-    value=f"${predicted_price:,2f}"
+    value=f"${predicted_price:.2f}"
   )
 
   st.caption(
     "Note: Price is estimated in USD (2019 values). The model output is scaled by $100,000."
   )
-
-  # 4. (Optional) Display model performance:
-  st.markdown("---")
-  st.subheader("Model Performance Context")
